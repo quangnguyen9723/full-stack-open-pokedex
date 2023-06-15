@@ -27,3 +27,12 @@ jobs:
         run: echo "Hello from job 2!"
       - name: echo2
         run: echo "Hello from job 2!"
+  job3:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: echo
+        run: echo "Hello from job 3!"
+      - name: echo1
+        run: echo "Hello from job 3!"
+      - name: echo2
+        run: echo "Hello from job 3!"
