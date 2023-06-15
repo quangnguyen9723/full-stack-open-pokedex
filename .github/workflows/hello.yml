@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: generate ssh-key file
-        run: |
-          touch ssh_key.pem
-          echo ${{ secrets.SSH_KEY }} > ssh_key.pem
-          chmod 400 ~/.ssh/ssh_key.pem
-      - name: connect to ec2
-        run: |
-          ssh -i ssh_key.pem ubuntu@${{ secrets.IP_ADDRESS }} "echo 'Hello World!'"
+        run: echo 'hi'
+      #   run: |
+      #     touch ssh_key.pem
+      #     echo ${{ secrets.SSH_KEY }} > ssh_key.pem
+      #     chmod 400 ~/.ssh/ssh_key.pem
+      # - name: connect to ec2
+      #   run: |
+      #     ssh -i ssh_key.pem ubuntu@${{ secrets.IP_ADDRESS }} "echo 'Hello World!'"
   job2:
     needs: hello_world_job
     runs-on: ubuntu-20.04
