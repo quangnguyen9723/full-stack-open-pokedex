@@ -19,6 +19,7 @@ jobs:
         run: |
           ssh -i ssh_key.pem ubuntu@${{ secrets.IP_ADDRESS }} "echo 'Hello World!'"
   job2:
+    needs: hello_world_job
     runs-on: ubuntu-20.04
     steps:
       - name: echo
@@ -28,6 +29,7 @@ jobs:
       - name: echo2
         run: echo "Hello from job 2!"
   job3:
+    needs: job2
     runs-on: ubuntu-20.04
     steps:
       - name: echo
