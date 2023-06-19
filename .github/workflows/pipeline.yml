@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: triggered on push master
         run: echo "hello from master"
+      - name: check aws
+        run: aws iam get-user
       # - uses: actions/checkout@v3
       # - uses: actions/setup-node@v3
       #   with:
