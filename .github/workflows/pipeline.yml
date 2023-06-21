@@ -2,7 +2,17 @@ name: Deployment pipeline
 
 on:
   workflow_dispatch:
-  # push:
+    inputs:
+      tenant:
+        description: "Tenant to run tests for"
+        type: string
+        required: true
+      stage:
+        description: "Stage to run tests on"
+        type: string
+        required: true
+        default: "beta"
+  push:
   #   branches:
   #     - master
 
@@ -10,42 +20,15 @@ jobs:
   simple_deployement_pipeline:
     runs-on: ubuntu-20.04
     steps:
-      - name: triggered on push master
-        run: echo "hello from master"
-      - name: check aws
-        run: aws iam get-user
-      # - uses: actions/checkout@v3
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "16"
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: linting
-      #   run: npm run eslint
-      # - name: build
-      #   run: npm run build
-      # - name: test
-      #   run: npm run test
-      # - name: print all
-      #   run: |
-      #     touch dir_tree.py
-      #     echo "import os
-
-      #     def print_directory_tree(root_path, indent=''):
-      #         items = os.listdir(root_path)
-      #         for index, item in enumerate(sorted(items)):
-      #             item_path = os.path.join(root_path, item)
-      #             is_last = index == len(items) - 1
-
-      #             if os.path.isdir(item_path):
-      #                 print(indent + '├─ ' + item)
-      #                 branch = indent + ('│  ' if not is_last else '   ')
-      #                 print_directory_tree(item_path, indent=branch)
-      #             else:
-      #                 prefix = '└─ ' if is_last else '├─ '
-      #                 print(indent + prefix + item)
-
-      #     root_directory = '.'  # Change this to the root directory you want to print the tree for
-      #     print_directory_tree(root_directory)
-      #     " > dir_tree.py
-      #     python3 dir_tree.py
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/ubuntu
+            git clone
