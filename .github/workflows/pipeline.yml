@@ -9,9 +9,12 @@ on:
         required: true
       stage:
         description: "Stage to run tests on"
-        type: string
+        type: choice
         required: true
         default: "beta"
+        options:
+          - "beta"
+          - "dev"
   push:
   #   branches:
   #     - master
@@ -22,13 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd /home/ubuntu
-            git clone
+      - name: test
+        run: |
+          echo "Running tests for ${{ github.event.inputs.tenant }} on ${{ github.event.inputs.stage }}"
