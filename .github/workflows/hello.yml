@@ -1,10 +1,11 @@
 name: Hello World!
 
 on:
-  push:
-    branches:
-      - master
-      # note that your "main" branch might be called main instead of master
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master
+  # note that your "main" branch might be called main instead of master
 
 jobs:
   hello_world_job:
