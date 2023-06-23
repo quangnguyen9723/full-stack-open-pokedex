@@ -19,6 +19,10 @@ on:
   #   branches:
   #     - master
 
+env:
+  TENANT: ${{ github.event.inputs.tenant }}
+  STAGE: ${{ github.event.inputs.stage }}
+
 jobs:
   simple_deployement_pipeline:
     runs-on: ubuntu-20.04
