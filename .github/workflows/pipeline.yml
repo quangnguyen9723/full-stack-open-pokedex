@@ -32,4 +32,4 @@ jobs:
       - name: test
         run: |
           KEY = $(echo SSH_KEY)
-          SSH_KEY = ${{ secrets[SSH_KEY] }}
+          SSH_KEY = ${{ secrets.SSH_KEY }}
