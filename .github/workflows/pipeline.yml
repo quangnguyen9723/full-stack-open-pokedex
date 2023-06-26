@@ -21,7 +21,7 @@ on:
 
 env:
   TENANT: ${{ github.event.inputs.tenant }}
-  STAGE: ${{ github.event.inputs.stage }}
+  # STAGE: ${{ github.event.inputs.stage }}
 
 jobs:
   simple_deployement_pipeline:
@@ -29,7 +29,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: test
-        run: |
-          KEY=$(echo SSH_KEY)
-          SSH_KEY = ${{ secrets.SSH_KEY }}
+      - name: print1
+        run: echo hi1
+      - name: print2
+        run: echo hi2
+        env:
+          STAGE: ${{ github.event.inputs.stage }}
