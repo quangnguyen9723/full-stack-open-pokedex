@@ -30,6 +30,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: hmarr/debug-action@v2
       - name: print1
         run: echo hi1
       - name: print2
