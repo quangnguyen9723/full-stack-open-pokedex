@@ -7,6 +7,7 @@ on:
         description: "Tenant to run tests for"
         type: string
         required: true
+        default: "tenant"
       stage:
         description: "Stage to run tests on"
         type: choice
@@ -35,3 +36,5 @@ jobs:
         run: echo hi2
         env:
           STAGE: ${{ github.event.inputs.stage }}
+      - name: print secrets
+        run: echo "::add-mask::$(echo hi)"
