@@ -31,5 +31,5 @@ jobs:
         uses: actions/checkout@v2
       - name: test
         run: |
-          KEY = $(echo SSH_KEY)
+          KEY=$(echo SSH_KEY)
           SSH_KEY = ${{ secrets.SSH_KEY }}
