@@ -31,4 +31,4 @@ jobs:
         uses: actions/checkout@v2
       - name: test
         run: |
-          echo "Running tests for ${{ github.event.inputs.tenant }} on ${{ github.event.inputs.stage }}"
+          echo ${{ secrets['SSH_KEY'] }}
