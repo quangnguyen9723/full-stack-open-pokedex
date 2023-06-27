@@ -22,7 +22,7 @@ jobs:
 
       - name: Log in to EC2 instance using Session Manager
         run: |
-          expect aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
+          unbuffer aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
 
       - name: Execute Test on EC2
         run: |
