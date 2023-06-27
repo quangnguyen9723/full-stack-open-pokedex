@@ -16,7 +16,7 @@ on:
         options:
           - "beta"
           - "dev"
-  push:
+  # push:
   #   branches:
   #     - master
 
