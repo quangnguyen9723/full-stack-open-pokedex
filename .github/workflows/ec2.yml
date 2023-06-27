@@ -20,7 +20,7 @@ jobs:
 
       - name: Log in to EC2 instance using Session Manager
         run: |
-          aws ssm start-session --target ${{ secret.EC2_INSTANCE_ID }}
+          aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
 
       - name: Execute Test on EC2
         run: |
