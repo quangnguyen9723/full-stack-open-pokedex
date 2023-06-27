@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        # tenan: ${{ github.event.inputs.tenant }}
+        tenan: ${{ github.event.inputs.tenant }}
 
     steps:
       - name: Checkout
