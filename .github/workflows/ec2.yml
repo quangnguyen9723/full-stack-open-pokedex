@@ -24,9 +24,14 @@ jobs:
 
       - name: Execute Test on EC2
         run: |
-          cd /home/ec2-user/
-          touch test_pipeline.txt
+          pwd
+          ls -la
+          cd
+          pwd
+          ls -la
+        #   cd /home/ec2-user/
+        #   touch test_pipeline.txt
 
-      - name: Log out of EC2 instance
-        run: |
-          aws ssm terminate-session --session-id $AWS_SSM_SESSION_ID
+    #   - name: Log out of EC2 instance
+    #     run: |
+    #       aws ssm terminate-session --session-id $AWS_SSM_SESSION_ID
