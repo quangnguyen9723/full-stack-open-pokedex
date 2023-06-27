@@ -1,0 +1,32 @@
+name: Execute Test on EC2
+
+on:
+  push:
+
+jobs:
+  execute-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to EC2 instance using Session Manager
+        run: |
+          aws ssm start-session --target INSTANCE_ID
+
+      - name: Execute Test on EC2
+        run: |
+          cd /home/ec2-user/
+          touch test_pipeline.txt
+
+      - name: Log out of EC2 instance
+        run: |
+          aws ssm terminate-session --session-id $AWS_SSM_SESSION_ID
