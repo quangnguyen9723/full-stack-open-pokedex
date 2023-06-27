@@ -39,4 +39,4 @@ jobs:
         env:
           STAGE: ${{ github.event.inputs.stage }}
       - name: print secrets
-        run: echo "::add-mask::${{ github.event.inputs.stage }}"
+        run: echo ${{ github.event.inputs.stage }}
