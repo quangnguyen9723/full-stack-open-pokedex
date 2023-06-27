@@ -20,9 +20,9 @@ on:
   #   branches:
   #     - master
 
-env:
-  TENANT: ${{ github.event.inputs.tenant }}
-  # STAGE: ${{ github.event.inputs.stage }}
+# env:
+#   TENANT: ${{ github.event.inputs.tenant }}
+# STAGE: ${{ github.event.inputs.stage }}
 
 jobs:
   simple_deployement_pipeline:
@@ -30,7 +30,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        tenant: ${{ github.event.inputs.tenant }}
+        tenan: ${{ github.event.inputs.tenant }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
