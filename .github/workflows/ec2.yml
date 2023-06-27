@@ -18,7 +18,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Install expect
-        run: apt install -y expect
+        run: sudo apt install -y expect
 
       - name: Log in to EC2 instance using Session Manager
         run: |
