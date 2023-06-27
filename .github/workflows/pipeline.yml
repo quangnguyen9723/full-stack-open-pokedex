@@ -16,7 +16,7 @@ on:
         options:
           - "beta"
           - "dev"
-  # push:
+  push:
   #   branches:
   #     - master
 
@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-        tenant: [github.event.inputs.tenant]
+        tenant: ${{ github.event.inputs.tenant }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
