@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -18,9 +17,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Install expect
+        run: apt install -y expect
+
       - name: Log in to EC2 instance using Session Manager
         run: |
-          aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
+          expect aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
 
       - name: Execute Test on EC2
         run: |
