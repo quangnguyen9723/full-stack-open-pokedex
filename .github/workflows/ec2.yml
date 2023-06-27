@@ -22,7 +22,10 @@ jobs:
 
       - name: Log in to EC2 instance using Session Manager
         run: |
-          unbuffer aws ssm start-session --target ${{ secrets.EC2_INSTANCE_ID }}
+          unbuffer aws ssm start-session \
+          --target ${{ secrets.EC2_INSTANCE_ID }} \
+          --document-name "AWS-RunShellScript" \
+          --parameters "commands=touch testingtesting.txt" \
 
       - name: Execute Test on EC2
         run: |
