@@ -20,22 +20,31 @@ jobs:
       - name: Install expect
         run: sudo apt install -y expect
 
-      - name: Log in to EC2 instance using Session Manager
-        run: |
-          unbuffer aws ssm start-session \
-          --target ${{ secrets.EC2_INSTANCE_ID }} \
-          --document-name "AWS-RunShellScript" \
-          --parameters "commands=touch testingtesting.txt" \
+      #   - name: Log in to EC2 instance using Session Manager
+      #     run: unbuffer aws ssm start-session --document-name 'AWS-StartNonInteractiveCommand' --parameters '{"command": [“echo hi“]}’ --target "i-0455b38380a0ec4e9"
+      #   - run: unbuffer aws ssm start-session \
+      #   --document-name 'AWS-StartNonInteractiveCommand' \
+      #   --parameters '{"command": ["sudo sh -c \"systemctl status boot_scripts && ( journalctl -u boot_scripts | cat )\""]}' --target "$instanceid"
 
-      - name: Execute Test on EC2
-        run: |
-          pwd
-          ls -la
-          cd
-          pwd
-          ls -la
-        #   cd /home/ec2-user/
-        #   touch test_pipeline.txt
+      - name: Run sth on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_INSTANCE_ID }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            echo "hello world"
+
+    #   - name: Execute Test on EC2
+    #     run: |
+    #       pwd
+    #       ls -la
+    #       cd
+    #       pwd
+    #       ls -la
+    #   cd /home/ec2-user/
+    #   touch test_pipeline.txt
 
     #   - name: Log out of EC2 instance
     #     run: |
