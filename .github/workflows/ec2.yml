@@ -27,7 +27,10 @@ jobs:
       #   --parameters '{"command": ["sudo sh -c \"systemctl status boot_scripts && ( journalctl -u boot_scripts | cat )\""]}' --target "$instanceid"
 
       - name: Run tests on EC2
-        run: aws ssm send-command --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --document-name AWS-RunShellScript --parameters commands=["cd","mkdir test"]
+        run: aws ssm send-command \
+          --instance-ids '${{ secrets.EC2_INSTANCE_ID }}' \
+          --document-name 'AWS-RunShellScript' \
+          --parameters 'commands="cd && touch testQuang"'
 
     #   - name: Run sth on EC2
     #     uses: appleboy/ssh-action@master
