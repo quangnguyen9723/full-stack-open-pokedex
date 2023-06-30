@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
-        # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
+      - name: check existence
+        run: ls -la
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.3
@@ -19,10 +19,11 @@ jobs:
           host: 192.168.3.47
           username: ec2-user
           password: ${{ secrets.SSH_KEY }}
-          # port: ${{ secrets.PORT }}
           source: ./fly.toml
           target: /home/ec2-user/quang/
 
+      # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
+      # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
       - name: AWS SSM send-command
         uses: peterkimzz/aws-ssm-send-command@master
         with:
