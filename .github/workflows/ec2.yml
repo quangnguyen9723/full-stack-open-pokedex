@@ -42,6 +42,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
-          working-directory: /home/ec2-user/
-          command: echo hi
+          working-directory: /home/ec2-user/quang
+          command: |
+            aws s3 cp s3://server-integration-test-artifacts/fly.toml .
+            touch testing
           comment: Hello world!
