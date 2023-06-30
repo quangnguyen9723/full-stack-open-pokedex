@@ -11,42 +11,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # - name: check existence
-      #   run: ls -la
-      # - name: copy file via ssh password
-      #   uses: appleboy/scp-action@v0.1.3
-      #   with:
-      #     host: 192.168.3.47
-      #     username: ec2-user
-      #     password: ${{ secrets.SSH_KEY }}
-      #     source: ./fly.toml
-      #     target: quang/
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-
-      - name: Install SSM
-        run: |
-          curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
-          sudo dpkg -i session-manager-plugin.deb
-          sudo apt-get install -f
-          sudo dpkg -i session-manager-plugin.deb
-      - name: Configure SSH
-        run: mkdir ~/.ssh && touch ~/.ssh/config && cat ./config > ~/.ssh/config
-
-      - name: setup ssh key
-        run: |
-          touch ssh_key.pem
-          chmod 600 ssh_key.pem
-          echo "${{ secrets.SSH_KEY }}" > ssh_key.pem
-          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-
-      - name: Copy fly.toml file to EC2 Instance
-        run: scp -i ssh_key.pem -r ./fly.toml ec2-user@${{ secrets.EC2_INSTANCE_ID }}:/home/ec2-user/quang
+      - name: Copy files to EC2
+        run: aws s3 cp fly.toml s3://server-integration-test-artifacts/
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
@@ -59,5 +25,6 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
           working-directory: /home/ec2-user/quang
-          command: echo hi
           comment: Hello world!
+          command: |
+            aws s3 cp s3://server-integration-test-artifacts/fly.toml .
