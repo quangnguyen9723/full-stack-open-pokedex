@@ -10,12 +10,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+      #   - name: Set up AWS credentials
+      #     uses: aws-actions/configure-aws-credentials@v1
+      #     with:
+      #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #       aws-region: ${{ secrets.AWS_REGION }}
 
       #   - name: Install expect
       #     run: sudo apt install -y expect
@@ -26,44 +26,21 @@ jobs:
       #   --document-name 'AWS-StartNonInteractiveCommand' \
       #   --parameters '{"command": ["sudo sh -c \"systemctl status boot_scripts && ( journalctl -u boot_scripts | cat )\""]}' --target "$instanceid"
 
-      - name: Run tests on EC2 via SSM
+      - name: AWS SSM send-command
+        uses: peterkimzz/aws-ssm-send-command@master
         id: ssm
-        run: |
-          instance_id=i-0455b38380a0ec4e9
-          document_name=AWS-RunShellScript
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
-          output=$(aws ssm send-command \
-            --instance-ids "$instance_id" \
-            --document-name "$document_name" \
-            --comment 'Run tests' \
-            --parameters commands='
-              cd ~
-              touch quangTestt
-            ')
+          working-directory: /home/ec2-user/
+          command: ls -al
+          comment: Hello world!
 
-          command_id=$(echo $output | jq -r '.Command.CommandId')
-
-          echo "::set-output name=command_id::$command_id"
-
-      - name: Check SSM command status
-        run: |
-          command_id=${{ steps.ssm.outputs.command_id }}
-          instance_id=i-0455b38380a0ec4e9
-
-          while :
-          do
-              output=$(aws ssm get-command-invocation --command-id $command_id --instance-id $instance_id)
-              status=$(echo $output | jq -r '.Status')
-              
-              if [ "$status" == "InProgress" ]; then
-              echo "Command is still in progress..."
-              sleep 5
-              else
-              echo "Command status: $status"
-              echo "Command output: $(echo $output | jq -r '.StandardOutputContent')"
-              break
-              fi
-          done
+      - name: Get output
+        run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
 
     #   - name: Run sth on EC2
     #     uses: appleboy/ssh-action@master
