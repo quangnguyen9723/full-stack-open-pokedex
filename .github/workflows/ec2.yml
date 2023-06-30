@@ -31,12 +31,12 @@ jobs:
 
       - name: Write the EC2 SSH private key to a file
         run: |
-          echo "${{ secrets.SSH_KEY}}" > ec2_ssh_private.key
-          chmod 600 ec2_ssh_private.key
+          echo "${{ secrets.SSH_KEY}}" > ssh_key.pem
+          chmod 600 ssh_key.pem
 
       - name: Copy build files to EC2
         run: |
-          scp -i ec2_ssh_private.key -o StrictHostKeyChecking=no -r ./fly.toml ec2-user@54.218.215.47:/home/ec2-user/quang/
+          scp -i ssh_key.pem -o StrictHostKeyChecking=no -r ./fly.toml ec2-user@54.218.215.47:/home/ec2-user/quang/
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
