@@ -36,7 +36,7 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
           working-directory: /home/ec2-user/
-          command: ls -al
+          command: touch quangTest
           comment: Hello world!
 
       - name: Get output
