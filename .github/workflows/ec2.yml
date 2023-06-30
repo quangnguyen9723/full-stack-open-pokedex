@@ -15,8 +15,8 @@ jobs:
 
       - name: create foo file
         run: touch fooFile
-      - run: touch ssh_key.pem
-      - run: echo ${{ secrets.SSH_KEY }} > ssh_key.pem
+      - run: touch ./ssh_key.pub
+      - run: echo ${{ secrets.SSH_KEY }} > ./ssh_key.pub
 
       # - name: copy file via ssh password
       #   uses: appleboy/scp-action@v0.1.4
@@ -28,7 +28,7 @@ jobs:
       #     source: "fooFile"
       #     target: /home/ec2-user/quang/
       - name: Transfer file
-        run: scp -i “ssh_key.pem" -r ./fooFile ec2-user@i-0455b38380a0ec4e9:/home/ec2-user/quang/
+        run: scp -i ./ssh_key.pub -r ./fooFile ec2-user@i-0455b38380a0ec4e9:/home/ec2-user/quang/
 
       - name: AWS SSM send-command
         uses: peterkimzz/aws-ssm-send-command@master
