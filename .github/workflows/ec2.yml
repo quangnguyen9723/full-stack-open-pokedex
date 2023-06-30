@@ -35,9 +35,20 @@ jobs:
           sudo dpkg -i session-manager-plugin.deb
           sudo apt-get install -f
           sudo dpkg -i session-manager-plugin.deb
+      - name: Configure SSH
+        run: |
+          echo "host i-* mi-* 
+          ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSess" >> ~/.ssh/config
+
+      - name: setup ssh key
+        run: |
+          touch ssh_key.pem
+          chmod 600 ssh_key.pem
+          echo "${{ secrets.SSH_KEY }}" > ssh_key.pem
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
       - name: Copy fly.toml file to EC2 Instance
-        run: scp -i ${{ secrets.SSH_KEY }} -r ./fly.toml ec2-user@${{ secrets.EC2_INSTANCE_ID }}:/home/ec2-user/quang
+        run: scp -i ssh_key.pem -r ./fly.toml ec2-user@${{ secrets.EC2_INSTANCE_ID }}:/home/ec2-user/quang
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
