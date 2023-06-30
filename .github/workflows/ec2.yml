@@ -36,9 +36,7 @@ jobs:
           sudo apt-get install -f
           sudo dpkg -i session-manager-plugin.deb
       - name: Configure SSH
-        run: |
-          echo "host i-* mi-* 
-          ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSess" >> ~/.ssh/config
+        run: echo ./config > ~/.ssh/config
 
       - name: setup ssh key
         run: |
