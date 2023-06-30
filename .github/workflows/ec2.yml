@@ -29,8 +29,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Copy files to EC2
-        run: aws s3 cp fly.toml s3://server-integration-test-artifacts/
+      - name: Install SSM
+        run: sudo yum install -y https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm
+
+      - name: Copy fly.toml file to EC2 Instance
+        run: scp -i ${{ secrets.SSH_KEY }} -r ./fly.toml ec2-user@${{ secrets.EC2_INSTANCE_ID }}:/home/ec2-user/quang
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
@@ -43,7 +46,5 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
           working-directory: /home/ec2-user/quang
-          command: |
-            aws s3 cp s3://server-integration-test-artifacts/fly.toml . --source-region us-west-2
-            touch testing
+          command: echo hi
           comment: Hello world!
