@@ -15,8 +15,8 @@ jobs:
 
       - name: create foo file
         run: touch fooFile
-      - name: create ssh key
-        run: touch ssh_key.pem && echo ${{ secrets.SSH_KEY }} > ssh_key.pem
+      - run: touch ssh_key.pem
+      - run: echo ${{ secrets.SSH_KEY }} > ssh_key.pem
 
       # - name: copy file via ssh password
       #   uses: appleboy/scp-action@v0.1.4
