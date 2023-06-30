@@ -20,7 +20,7 @@ jobs:
           username: ec2-user
           password: ${{ secrets.SSH_KEY }}
           source: ./fly.toml
-          target: /home/ec2-user/quang/
+          target: quang/
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
