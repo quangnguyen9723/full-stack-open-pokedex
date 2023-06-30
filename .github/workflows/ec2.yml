@@ -44,6 +44,6 @@ jobs:
 
           working-directory: /home/ec2-user/quang
           command: |
-            aws s3 cp s3://server-integration-test-artifacts/fly.toml .
+            aws s3 cp s3://server-integration-test-artifacts/fly.toml . --source-region us-west-2
             touch testing
           comment: Hello world!
