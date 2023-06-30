@@ -10,25 +10,23 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      #   - name: Set up AWS credentials
-      #     uses: aws-actions/configure-aws-credentials@v1
-      #     with:
-      #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #       aws-region: ${{ secrets.AWS_REGION }}
+        # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
+        # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
 
-      #   - name: Install expect
-      #     run: sudo apt install -y expect
+      - name: create foo file
+        run: touch fooFile
 
-      #   - name: Log in to EC2 instance using Session Manager
-      #     run: unbuffer aws ssm start-session --document-name 'AWS-StartNonInteractiveCommand' --parameters '{"command": [“echo hi“]}’ --target "i-0455b38380a0ec4e9"
-      #   - run: unbuffer aws ssm start-session \
-      #   --document-name 'AWS-StartNonInteractiveCommand' \
-      #   --parameters '{"command": ["sudo sh -c \"systemctl status boot_scripts && ( journalctl -u boot_scripts | cat )\""]}' --target "$instanceid"
-
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_INSTANCE_ID }}
+          username: ec2-user
+          password: ${{ secrets.SSH_KEY }}
+          # port: ${{ secrets.PORT }}
+          source: "fooFile"
+          target: /home/ec2-user/quang/
       - name: AWS SSM send-command
         uses: peterkimzz/aws-ssm-send-command@master
-        id: ssm
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -36,31 +34,5 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
 
           working-directory: /home/ec2-user/
-          command: touch quangTest
+          command: echo hi
           comment: Hello world!
-
-      - name: Get output
-        run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
-
-    #   - name: Run sth on EC2
-    #     uses: appleboy/ssh-action@master
-    #     with:
-    #       host: ${{ secrets.EC2_INSTANCE_ID }}
-    #       username: ${{ secrets.EC2_USERNAME }}
-    #       key: ${{ secrets.EC2_KEY }}
-    #       port: ${{ secrets.EC2_PORT }}
-    #       script: echo "hello world"
-
-    #   - name: Execute Test on EC2
-    #     run: |
-    #       pwd
-    #       ls -la
-    #       cd
-    #       pwd
-    #       ls -la
-    #   cd /home/ec2-user/
-    #   touch test_pipeline.txt
-
-    #   - name: Log out of EC2 instance
-    #     run: |
-    #       aws ssm terminate-session --session-id $AWS_SSM_SESSION_ID
