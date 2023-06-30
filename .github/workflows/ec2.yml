@@ -36,7 +36,7 @@ jobs:
 
       - name: Copy build files to EC2
         run: |
-          scp -i ec2_ssh_private.key -o StrictHostKeyChecking=no -r ./fly.toml ec2-user@i-0455b38380a0ec4e9:/home/ec2-user/quang/
+          scp -i ec2_ssh_private.key -o StrictHostKeyChecking=no -r ./fly.toml ec2-user@192.168.3.47:/home/ec2-user/quang/
 
       # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
       # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
