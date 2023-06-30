@@ -13,22 +13,15 @@ jobs:
         # To use this action, you have to set AWS IAM Role AmazonSSMFullAccess to your IAM user.
         # Also your EC2 Instance must have IAM Role including AmazonSSMFullAccess.
 
-      - name: create foo file
-        run: touch fooFile
-      - run: touch ./ssh_key.pub
-      - run: echo ${{ secrets.SSH_KEY }} > ./ssh_key.pub
-
-      # - name: copy file via ssh password
-      #   uses: appleboy/scp-action@v0.1.4
-      #   with:
-      #     host: ec2-54-218-215-47.us-west-2.compute.amazonaws.com
-      #     username: ec2-user
-      #     password: ${{ secrets.SSH_KEY }}
-      #     # port: ${{ secrets.PORT }}
-      #     source: "fooFile"
-      #     target: /home/ec2-user/quang/
-      - name: Transfer file
-        run: scp -i ./ssh_key.pub -r ./fooFile ec2-user@i-0455b38380a0ec4e9:/home/ec2-user/quang/
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: 192.168.3.47
+          username: ec2-user
+          password: ${{ secrets.SSH_KEY }}
+          # port: ${{ secrets.PORT }}
+          source: ./fly.toml
+          target: /home/ec2-user/quang/
 
       - name: AWS SSM send-command
         uses: peterkimzz/aws-ssm-send-command@master
