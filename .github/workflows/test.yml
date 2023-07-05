@@ -1,0 +1,29 @@
+name: Hide Password Input in Workflow Dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: "Username"
+        required: true
+      password:
+        description: "Password"
+        required: true
+
+jobs:
+  hide-password-input:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hide Password Input
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const payload = {
+              workflow: 'my-workflow.yml',
+              inputs: {
+                username: '${{ github.event.inputs.username }}',
+                password: null
+              }
+            };
+
+            const response = await github.actions.createWorkflowDispatch(payload);
+            console.log(response);

@@ -22,7 +22,7 @@ on:
 
 # env:
 #   TENANT: ${{ github.event.inputs.tenant }}
-# STAGE: ${{ github.event.inputs.stage }}
+#   STAGE: ${{ github.event.inputs.stage }}
 
 jobs:
   simple_deployement_pipeline:
