@@ -7,6 +7,7 @@ on:
         required: true
       password:
         description: "Password"
+        type: environment
         required: true
 
 jobs:
