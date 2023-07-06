@@ -1,6 +1,6 @@
-import core from '@actions/core';
-import fs from 'fs';
-import colors from 'ansi-styles';
+core = require('@actions/core');
+fs = require('fs');
+colors = require('ansi-colors');
 
 // Get a list of inputs that we should hide the values of. 
 
