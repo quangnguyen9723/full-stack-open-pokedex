@@ -1,0 +1,9 @@
+name: 'Hide Sensitive Inputs'
+description: 'Hide sensitive inputs from the workflow dispatch UI.'
+inputs:
+  inputs-to-hide:
+    description: 'Comma-separated list of input names to hide.'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'

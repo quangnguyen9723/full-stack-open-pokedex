@@ -30,17 +30,14 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+        tenan: ${{ github.event.inputs.tenant }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Hide the inputs values to keep them private in the logs when running this workflow
-        uses: levibostian/action-hide-sensitive-inputs@f85e8aea378dd694d59ee13a4df8be891bb65207
-      - name: print1
-        run: echo hi1
-      - name: print2
-        run: echo hi2
-        env:
-          STAGE: ${{ github.event.inputs.stage }}
+      # - name: Hide the inputs values to keep them private in the logs when running this workflow
+      #   uses: levibostian/action-hide-sensitive-inputs@v1
+      # - name: custom hiding
+      #   uses: ./.github/actions/hide-inputs
       - name: print secrets
-        run: echo ${{ github.event.inputs.stage }}
+        run: echo stage-${{ github.event.inputs.stage }}
